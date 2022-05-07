@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, DeviceEventEmitter } from 'react-native';
 import { Dialog, Button } from '@rneui/themed';
 
 import { getHotSearch } from '../../utils/api';
@@ -64,10 +64,11 @@ const Relate = (props) => {
               <View style={{ width: '44%', height: 30 }} key={item.hot_id}>
                 <TouchableOpacity style={{ ...style.flexRow, width: '100%', height: 30 }} onPress={() => {
                   addSearchHistory(props.Store, item.keyword)
+                  DeviceEventEmitter.emit('search', item.keyword)
                   props.navigation.navigate('search-result', { text: item.keyword })
                 }}>
                   <Text style={{ color: '#4f4f4f' }}>{sliceByBytes(item.show_name, item.icon === '' ? 22 : 18)}</Text>
-                  {item.icon === '' ? null : <Image source={{ uri: item.icon }} style={{ width: 16, height: 16, marginLeft: 8 }} />}
+                  {item.icon === '' ? null : <Image source={{ uri: item.icon }} style={{ width: item.word_type === 8 ? 16 : 50, height: 16, marginLeft: 8 }} />}
                 </TouchableOpacity>
               </View>
             )
@@ -89,6 +90,7 @@ const Relate = (props) => {
                   return (
                     <TouchableOpacity key={item} style={{ ...style.flexRow, ...style.hisItem }} onPress={() => {
                       addSearchHistory(props.Store, item)
+                      DeviceEventEmitter.emit('search', item)
                       props.navigation.navigate('search-result', { text: item })
                     }} onLongPress={() => {
                       setCancelIndex(index)

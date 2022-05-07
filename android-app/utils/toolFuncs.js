@@ -1,6 +1,6 @@
 /**
  * 数字转为中文计数字符串
- * @param {Number} num 
+ * @param {Number} num
  * @returns xx.x万，xxx.x亿
  */
 export function getNumToString(num) {
@@ -17,10 +17,14 @@ export function getNumToString(num) {
 
 /**
  * 数字转为时间格式
- * @param {Number} num 
+ * @param {Number} num
  * @returns 时:分:秒
  */
 export function getTimeToString(num) {
+  if (typeof num == 'string') {
+    let timeArr = num.split(':')
+    num = parseInt(timeArr[0]) * 60 + parseInt(timeArr[1])
+  }
   let h, m, s
   s = num % 60
   s = s < 10 ? '0' + s : s
@@ -42,42 +46,66 @@ export function getTimeToString(num) {
  * 按字节截取字符串，溢出打点
  * @param {String} str 待截取字符串
  * @param {Number} byteLeng 截取字节数
- * @returns 
+ * @returns
  */
 export function sliceByBytes(str, byteLeng) {
-  /** 
-   * 按字节计算字符串长度 
+  /**
+   * 按字节计算字符串长度
    * @param {String} str 待计算字符串
-   * @returns 
+   * @returns
    */
   function byteLength(str) {
     var len = 0;
     for (var i = 0; i < str.length; i++) {
-      //UTF8编码一个中文按3个字节算（GBK编码一个中文按2个字节）  
+      //UTF8编码一个中文按3个字节算（GBK编码一个中文按2个字节）
       len += (str.charCodeAt(i) > 255 ? 2 : 1);
-      //len += str.replace(/[^\x00-\xff]/g, 'xxx').length;  
+      //len += str.replace(/[^\x00-\xff]/g, 'xxx').length;
     }
     return len;
-  };
+  }
   /**
    * 按字节截取字符串
    * @param {String} str 待截取字符串
    * @param {Number} bytes 截取字节数
-   * @returns 
+   * @returns
    */
   function sliceByByte(str, bytes) {
     var len = 0;
     for (var i = 0; i < str.length; i++) {
-      //UTF8编码一个中文按3个字节算（GBK编码一个中文按2个字节）  
+      //UTF8编码一个中文按3个字节算（GBK编码一个中文按2个字节）
       len += (str.charCodeAt(i) > 255 ? 2 : 1);
       if (len > bytes) {
         return str.substring(0, i);
       }
     }
     return str;
-  };
+  }
   if (byteLength(str) <= byteLeng) {
     return str
   }
   return sliceByByte(str, byteLeng) + '...'
+}
+
+/**
+ * 时间戳转时间信息
+ * @param {*} date
+ * @returns “刚刚”，“xx分钟/小时前”，“昨天”，“20xx-xx-xx”
+ */
+export function getDateToInfo(date) {
+  let now = Math.floor(new Date().getTime() / 1000)
+  let time = now - date
+  if (time < 60) {
+    return '刚刚'
+  }
+  if (time < 60 * 60) {
+    return `${Math.floor(time / 60)}分钟前`
+  }
+  if (time < 60 * 60 * 24) {
+    return `${Math.floor(time / 3600)}小时前`
+  }
+  if (time < 60 * 60 * 48) {
+    return '昨天'
+  }
+  date = new Date(date * 1000)
+  return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
 }

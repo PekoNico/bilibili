@@ -1,7 +1,7 @@
 import request from "./http";
 
 const baseURL = 'https://api.bilibili.com/x/web-interface'
-const searchURL = 'http://s.search.bilibili.com'
+const searchURL = 'https://s.search.bilibili.com'
 
 // 根据分区获取推荐视频
 export const getDynamic = (params) => {
@@ -35,5 +35,26 @@ export const getHotSearch = () => {
   return request({
     type: 'get',
     url: `${searchURL}/main/hotword`
+  })
+}
+
+// 获取搜索建议
+export const getSearchSuggest = (params) => {
+  return request({
+    type: 'get',
+    url: `${searchURL}/main/suggest`,
+    params: {
+      highlight: true,
+      ...params
+    }
+  })
+}
+
+// 获取综合搜索结果
+export const getSearchAll = (params) => {
+  return request({
+    type: 'get',
+    url: `${baseURL}/search/all/v2`,
+    params: params
   })
 }

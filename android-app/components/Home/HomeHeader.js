@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { View, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { Avatar, Text, Input } from '@rneui/themed';
+import { Avatar, Text } from '@rneui/themed';
 import SearchBar from '../Search/SearchBar'
-import { getDefaultSearch } from '../../utils/api';
-
-import { byteLength, sliceByByte } from '../../utils/toolFuncs';
 
 const style = StyleSheet.create({
   wrapper: {
@@ -50,9 +47,11 @@ const HomeHeader = (props) => {
             </TouchableWithoutFeedback>
         }
       </View>
-      <View style={{ width: 240, backgroundColor: '#e2678a', borderRadius: 35, height: 40, marginLeft: 15 }}>
-        <SearchBar {...props}/>
-      </View>
+      <TouchableOpacity activeOpacity={1} style={{ width: 240, backgroundColor: '#e2678a', borderRadius: 35, height: 40, marginLeft: 15 }} onPress={() => {
+        props.navigation.navigate('search')
+      }}>
+        <SearchBar {...props} disabled={true}/>
+      </TouchableOpacity>
       <View style={{ flexDirection: 'row' }}>
         <Text style={{ fontFamily: 'iconfont', fontSize: 25, color: '#fff', marginLeft: 30 }}>&#xe672;</Text>
         <Text style={{ fontFamily: 'iconfont', fontSize: 25, color: '#fff', marginLeft: 10 }}>&#xe6b8;</Text>
