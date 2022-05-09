@@ -3,9 +3,9 @@
 
 `yarn android`
 
-![img](https://github.com/PekoNico/bilibili/tree/main/demo/demo.gif)
+![img](https://github.com/PekoNico/bilibili/blob/main/demo/demo.gif)
 
-![img](https://github.com/PekoNico/bilibili/tree/main/demo/demo_0.jpg)
-![img](https://github.com/PekoNico/bilibili/tree/main/demo/demo_1.jpg)
-![img](https://github.com/PekoNico/bilibili/tree/main/demo/demo_2.jpg)
-![img](https://github.com/PekoNico/bilibili/tree/main/demo/demo_3.jpg)
+![img](https://github.com/PekoNico/bilibili/blob/main/demo/demo_0.jpg)
+![img](https://github.com/PekoNico/bilibili/blob/main/demo/demo_1.jpg)
+![img](https://github.com/PekoNico/bilibili/blob/main/demo/demo_2.jpg)
+![img](https://github.com/PekoNico/bilibili/blob/main/demo/demo_3.jpg)
