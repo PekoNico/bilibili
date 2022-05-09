@@ -57,7 +57,9 @@ export default (props) => {
     };
   }, [props.data]);
   return (
-    <TouchableOpacity activeOpacity={1} style={styles.wrapper}>
+    <TouchableOpacity activeOpacity={1} style={styles.wrapper} onPress={() => {
+      props.navigation.navigate('video', {...props.data})
+    }} key={videoObj.key}>
       <View style={{ ...styles.imgWrapper, borderRadius: 6, overflow: 'hidden' }}>
         <Image style={styles.imgWrapper} source={{ uri: 'http:' + videoObj.pic }} />
         <View style={styles.timeWrapper}>

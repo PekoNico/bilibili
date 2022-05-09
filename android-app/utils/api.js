@@ -58,3 +58,12 @@ export const getSearchAll = (params) => {
     params: params
   })
 }
+
+// 获取分类搜索结果
+export const getSearchType = (params) => {
+  return request({
+    type: 'get',
+    url: `${baseURL}/search/type`,
+    params: params
+  })
+}

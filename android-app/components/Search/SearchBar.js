@@ -15,14 +15,13 @@ const SearchBar = (props) => {
   const [placeholder, setPlaceholder] = useState('');
   const inputRef = React.createRef()
   useEffect(() => {
-    let eve
+    let eve = DeviceEventEmitter.addListener('search', (text) => {
+      setText(text)
+      props.Store.changeSearchKeyword(text)
+      // inputRef.current.blur()
+    })
     if (props.focus) {
       inputRef.current.focus()
-      eve = DeviceEventEmitter.addListener('search', (text) => {
-        setText(text)
-        // console.log(inputRef)
-        // inputRef.current.blur()
-      })
     }
     getDefaultSearch().then(res => {
       setPlaceholder(sliceByBytes(res.data.data.show_name, style.maxLength || 22))
@@ -61,6 +60,8 @@ const SearchBar = (props) => {
         let t = text === '' ? placeholder : text
         addSearchHistory(props.Store, t)
         DeviceEventEmitter.emit('getSuggest', '')
+        props.Store.changeSearchKeyword(t)
+        inputRef.current.blur()
         props.navigation.navigate('search-result', { text: t })
       }}
     />

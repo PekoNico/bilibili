@@ -31,6 +31,13 @@ class Store {
   changeSearchHistory(arr) {
     this.searchHistory = arr
   }
+
+  @observable
+  searchKeyword = ''
+  @action
+  changeSearchKeyword(keyword) {
+    this.searchKeyword = keyword
+  }
 }
 
 export default new Store()

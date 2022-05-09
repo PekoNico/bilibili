@@ -34,7 +34,6 @@ const style = StyleSheet.create({
     height: 12,
     backgroundColor: '#b5b5b5',
     borderRadius: 6,
-    fontFamily: 'iconfont',
   }
 })
 const Relate = (props) => {
@@ -65,6 +64,7 @@ const Relate = (props) => {
                 <TouchableOpacity style={{ ...style.flexRow, width: '100%', height: 30 }} onPress={() => {
                   addSearchHistory(props.Store, item.keyword)
                   DeviceEventEmitter.emit('search', item.keyword)
+                  console.log('设置keyword为', item.keyword)
                   props.navigation.navigate('search-result', { text: item.keyword })
                 }}>
                   <Text style={{ color: '#4f4f4f' }}>{sliceByBytes(item.show_name, item.icon === '' ? 22 : 18)}</Text>

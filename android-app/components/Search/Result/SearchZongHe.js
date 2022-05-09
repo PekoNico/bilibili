@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, DeviceEventEmitter, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import SearchVideoList from '../../SearchVideoList/SearchVideoList';
 
 const styles = StyleSheet.create({
@@ -10,20 +10,9 @@ const styles = StyleSheet.create({
 })
 
 export default (props) => {
-  const [searchVideoList, setSearchVideoList] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    let event = DeviceEventEmitter.addListener('setSearchVideoList', (arr) => {
-      setSearchVideoList(arr)
-      setIsLoading(false)
-    })
-    return () => {
-      event.remove()
-    };
-  }, []);
   return (
     <View style={styles.wrapper}>
-      <SearchVideoList list={searchVideoList} loading={isLoading}/>
+      <SearchVideoList navigation={props.navigation} />
     </View>
   )
 }

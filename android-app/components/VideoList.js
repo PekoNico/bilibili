@@ -57,7 +57,7 @@ export default (props) => {
   useEffect(() => {
     // 控制第一次渲染是否获取数据
     setIsRefreshing(false)
-    // getData()
+    getData()
   }, [])
   return (
     <ScrollView

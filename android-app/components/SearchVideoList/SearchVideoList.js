@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, Text, FlatList, Image, StyleSheet, Dimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, FlatList, StyleSheet, Dimensions, DeviceEventEmitter } from 'react-native';
 import EmptyComponent from '../common/EmptyPage';
 import LoadingPage from '../common/LoadingPage'
 import VideoItem from './SearchVideoItem';
+import { getSearchType } from '../../utils/api';
+import { inject, observer } from 'mobx-react';
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -20,24 +22,59 @@ const styles = StyleSheet.create({
   }
 })
 
-export default (props) => {
+const SearchVideoList = (props) => {
+  const [list, setList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [order, setOrder] = useState('totalrank');
+  const [page, setPage] = useState(1);
+  const firstUpdate = useRef(true)
+  const ListRef = useRef()
+  const getData = (pageNum) => {
+    getSearchType({
+      search_type: 'video',
+      keyword: props.Store.searchKeyword,
+      order: order,
+      page: page
+    }).then(res => {
+      if (pageNum === 1) {
+        setList(res.data.data.result)
+        setPage(1)
+      } else {
+        setList(list.concat(res.data.data.result))
+      }
+      setPage(page + 1)
+      setIsLoading(false)
+    })
+  }
+  useEffect(() => {
+    getData(1)
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    } else {
+      ListRef.current.scrollToIndex({ viewPosition: 0, index: 0 })
+      setIsLoading(true)
+    }
+  }, [props.Store.searchKeyword]);
   const renderItem = (item) => {
     return (
-      <VideoItem data={item.item} />
-      // <View style={{ height: 200 }}>
-      //   <Text style={{ color: 'black' }}>{item.item.title}</Text>
-      // </View>
+      <VideoItem navigation={props.navigation} data={item.item} />
     )
   }
   return (
     <View style={styles.wrapper}>
       <FlatList
-        data={props.list}
+        ref={ListRef}
+        data={list}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         getItemLayout={(data, index) => ({ length: Dimensions.get('window').width / 8 * 2 + 20, offset: (Dimensions.get('window').width / 8 * 2 + 20) * index, index })}
-        ListEmptyComponent={props.loading ? LoadingPage : EmptyComponent}
+        ListEmptyComponent={isLoading ? LoadingPage : EmptyComponent}
+        onEndReachedThreshold={0.4}
+        onEndReached={getData}
       />
     </View>
   )
 }
+
+export default inject('Store')(observer(SearchVideoList))

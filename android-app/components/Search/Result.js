@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, DeviceEventEmitter } from 'react-native';
+import { Text, View } from 'react-native';
 import ZongHe from './Result/SearchZongHe';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getSearchAll } from '../../utils/api';
@@ -45,7 +45,6 @@ export default (prop) => {
         }
         return { ...item, num }
       })
-      DeviceEventEmitter.emit('setSearchVideoList', res.data.data.result[10].data)
       setScreenList(arr)
     })
   }, [prop.route.params]);
@@ -88,8 +87,7 @@ export default (prop) => {
           name={item.name}
           component={ZongHe}
           options={{
-            title: `${item.title}${item.num !== 0 ? '(' + item.num + ')' : ''}`,
-            
+            title: `${item.title}${item.num !== 0 ? '(' + item.num + ')' : ''}`
           }}
           key={item.name}
         />
